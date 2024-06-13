@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.fragments.MovieFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/v1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/h1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.15" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/h2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.2" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/h3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.275" />
+
+        <TextView
+            android:id="@+id/movie_title"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:autoSizeMaxTextSize="50dp"
+            android:autoSizeMinTextSize="1dp"
+            android:autoSizeTextType="uniform"
+            android:text="Título"
+            app:layout_constraintBottom_toTopOf="@+id/h1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText,UnusedAttribute" />
+
+        <TextView
+            android:id="@+id/movie_info"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="Detalles Película"
+            android:autoSizeMaxTextSize="20dp"
+            android:autoSizeMinTextSize="1dp"
+            android:autoSizeTextType="uniform"
+            android:layout_margin="10dp"
+            android:gravity="bottom"
+            app:layout_constraintBottom_toTopOf="@+id/h2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/h1"
+            tools:ignore="HardcodedText,UnusedAttribute" />
+
+        <Button
+            android:id="@+id/btn_info"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:backgroundTint="#00FFFFFF"
+            android:text="Detalles"
+            android:textColor="#000000"
+            android:autoSizeMaxTextSize="25dp"
+            android:autoSizeMinTextSize="1dp"
+            android:autoSizeTextType="uniform"
+            android:gravity="bottom"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/h3"
+            app:layout_constraintEnd_toStartOf="@+id/v1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/h2"
+            tools:ignore="HardcodedText,RtlCompat,UnusedAttribute,VisualLintButtonSize" />
+
+        <Button
+            android:id="@+id/btn_comprar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:backgroundTint="#00FFFFFF"
+            android:text="Comprar"
+            android:textColor="#000000"
+            android:autoSizeMaxTextSize="25dp"
+            android:autoSizeMinTextSize="1dp"
+            android:autoSizeTextType="uniform"
+            android:gravity="bottom"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/h3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/v1"
+            app:layout_constraintTop_toTopOf="@+id/h2"
+            tools:ignore="HardcodedText,RtlCompat,UnusedAttribute,VisualLintButtonSize"/>
+
+        <FrameLayout
+            android:id="@+id/frame_layout_movie"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/h3">
+
+        </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
