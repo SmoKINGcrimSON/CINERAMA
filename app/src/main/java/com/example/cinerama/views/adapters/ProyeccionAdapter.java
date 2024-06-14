@@ -6,9 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.cinerama.R;
 import com.example.cinerama.models.Proyeccion;
+import com.example.cinerama.utils.Tools;
+import com.example.cinerama.views.activities.SalaActivity;
+
 import java.util.ArrayList;
 
 public class ProyeccionAdapter extends RecyclerView.Adapter<ProyeccionAdapter.ProyeccionViewHolder> {
@@ -32,6 +36,7 @@ public class ProyeccionAdapter extends RecyclerView.Adapter<ProyeccionAdapter.Pr
         holder.lenguaje.setText(proyeccions.get(position).getLenguaje());
         holder.formato.setText(proyeccions.get(position).getFormato());
         holder.cine.setText(proyeccions.get(position).getCinema().getCiudad() + ", " + proyeccions.get(position).getCinema().getAvenida());
+        holder.itemView.setOnClickListener(c -> Tools.genActivity((AppCompatActivity) context, SalaActivity.class, "asd", "asd"));
     }
 
     @Override
