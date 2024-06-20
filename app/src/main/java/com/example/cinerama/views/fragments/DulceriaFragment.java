@@ -1,6 +1,7 @@
 package com.example.cinerama.views.fragments;
 
-import android.database.sqlite.SQLiteDatabase;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,12 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.cinerama.R;
-import com.example.cinerama.database.DbComidas;
-import com.example.cinerama.database.DbHelper;
+import com.example.cinerama.controllers.DulceriaController;
+import com.example.cinerama.repository.DbComidas;
 import com.example.cinerama.models.Comida;
 import com.example.cinerama.services.ComidaService;
+import com.example.cinerama.utils.NetworkChangeObserver;
 import com.example.cinerama.utils.Tools;
-import com.example.cinerama.views.activities.MainActivity;
 import com.example.cinerama.views.adapters.ComidaAdapter;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
@@ -23,7 +24,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class DulceriaFragment extends Fragment {
 
-    public ArrayList<Comida> comidas;
+    private ArrayList<Comida> comidas;
+    private DulceriaController controller;
 
     public static DulceriaFragment newInstance() {
         DulceriaFragment fragment = new DulceriaFragment();
@@ -36,6 +38,7 @@ public class DulceriaFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {}
+        controller = new DulceriaController(new ComidaService("https://664f5090fafad45dfae3489d.mockapi.io"), new DbComidas(getContext()));
     }
 
     @Override
@@ -46,38 +49,29 @@ public class DulceriaFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
-        ///CALL SERVICE
-        if(MainActivity.isConnectedToInternet){
-            CompletableFuture.supplyAsync(() -> {
-                ComidaService service = new ComidaService("https://664f5090fafad45dfae3489d.mockapi.io");
-                return service.getComidas();
-            })
-                    .thenCompose(c -> c)
-                    .thenApply(c -> fillComidaDB(c))
-                    .thenAccept(c -> {
-                        this.comidas = c;
-                        ComidaAdapter adapter = new ComidaAdapter(getContext(), comidas);
-                        ViewPager2 viewPager2 = Tools.setViewPage(getView().findViewById(R.id.viewPager_dulceria), adapter);
-                        Tools.moveCarousel(viewPager2, adapter, 2000);
-                    });
-        }
-        else{
-            chargeDataWithoutNetworkConnection();
-            ComidaAdapter adapter = new ComidaAdapter(getContext(), comidas);
-            ViewPager2 viewPager2 = Tools.setViewPage(getView().findViewById(R.id.viewPager_dulceria), adapter);
-            Tools.moveCarousel(viewPager2, adapter, 2000);
-        }
+        NetworkChangeObserver networkChangeObserver = new NetworkChangeObserver(connected -> {
+            if(connected) getComidaWithNetwork();
+            else getComidaWithoutNetwork();
+        });
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        getContext().registerReceiver(networkChangeObserver, filter);
     }
-    //DB DULCERIA
-    private ArrayList<Comida> fillComidaDB(ArrayList<Comida> comidas){
-        DbHelper dbHelper = new DbHelper(getContext());
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        DbComidas dbComidas = new DbComidas(getContext());
-        comidas.forEach(comida -> dbComidas.insertarComida(comida));
-        return comidas;
+
+    private void getComidaWithNetwork(){
+        CompletableFuture.supplyAsync(() -> controller.fetchComidas())
+                .thenCompose(c -> c)
+                .thenAccept(c -> {
+                    this.comidas = c;
+                    this.chargeInitialContent();
+                });
     }
-    private void chargeDataWithoutNetworkConnection(){
-        DbComidas dbComidas = new DbComidas(getContext());
-        this.comidas = dbComidas.readComidas();
+    private void getComidaWithoutNetwork(){
+        this.comidas = this.controller.getComidaFromDB();
+        chargeInitialContent();
+    }
+    private void chargeInitialContent(){
+        ComidaAdapter adapter = new ComidaAdapter(getContext(), comidas);
+        ViewPager2 viewPager2 = Tools.setViewPage(getView().findViewById(R.id.viewPager_dulceria), adapter);
+        Tools.moveCarousel(viewPager2, adapter, 2000);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.cinerama.database;
+package com.example.cinerama.repository;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

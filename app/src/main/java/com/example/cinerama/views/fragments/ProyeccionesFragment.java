@@ -9,14 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import com.example.cinerama.R;
-import com.example.cinerama.database.DbHelper;
-import com.example.cinerama.database.DbProyecciones;
+import com.example.cinerama.repository.DbHelper;
+import com.example.cinerama.repository.DbProyecciones;
 import com.example.cinerama.singleton.ProyeccionManager;
 import com.example.cinerama.services.ProyeccionService;
 import com.example.cinerama.models.Proyeccion;

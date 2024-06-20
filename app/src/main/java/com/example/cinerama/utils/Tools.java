@@ -16,12 +16,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public abstract class Tools {
     public static Retrofit genApiContext(String URI){
         return new Retrofit.Builder().baseUrl(URI).addConverterFactory(GsonConverterFactory.create()).build();
+    }
+    public static Retrofit genApiContextWithAuthentication(String URI, OkHttpClient client){
+        return new Retrofit
+                .Builder()
+                .baseUrl(URI)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
     }
     public static void genActivity(AppCompatActivity context, Class<? extends AppCompatActivity> activity, Serializable data, String dataName){
         if(data == null) return;

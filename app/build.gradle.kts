@@ -45,4 +45,6 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     //noinspection UseTomlInstead
     implementation("androidx.viewpager2:viewpager2:1.1.0")
+    //noinspection UseTomlInstead
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 }

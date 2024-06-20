@@ -1,26 +1,34 @@
 package com.example.cinerama.models;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 public class User implements Serializable {
-    private String username;
+    private String nickname;
+    private String name;
     private String email;
-    private String password;
-    private String id;
-
-    public User(String username, String email, String password, String id) {
-        this.username = username;
+    private String register_date;
+    public User(String nickname, String name, String email, String register_date){
+        this.nickname = nickname;
+        this.name = name;
         this.email = email;
-        this.password = password;
-        this.id = id;
+        this.register_date = register_date;
     }
 
-    public String getUsername() {
-        return username;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -31,19 +39,62 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getRegister_date() {
+        return register_date;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setRegister_date(String register_date) {
+        this.register_date = register_date;
     }
 
-    public String getId() {
-        return id;
+    public static class UserAuthenticated{
+        private boolean auth;
+        private String token;
+
+        public UserAuthenticated(boolean auth, String token){
+            this.auth = auth;
+            this.token = token;
+        }
+
+        public boolean isAuth() {
+            return auth;
+        }
+
+        public void setAuth(boolean auth) {
+            this.auth = auth;
+        }
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public static class UserForm{
+        private String password;
+        private String email;
+        public UserForm(String email, String password){
+            this.password = password;
+            this.email = email;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
     }
 }
