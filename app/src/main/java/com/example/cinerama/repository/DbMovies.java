@@ -15,36 +15,7 @@ public class DbMovies extends DbHelper {
         super(context);
         this.context = context;
     }
-    /*
-    public long insertMovie(Movie movie){
-        long id = 0;
-        try{
-            DbHelper dbHelper = new DbHelper(context);
-            SQLiteDatabase db = dbHelper.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put("id", movie.getId());
-            values.put("Title", movie.getTitle());
-            values.put("Year", movie.getYear());
-            values.put("Rated", movie.getRated());
-            values.put("Released", movie.getReleased());
-            StringBuilder genres = new StringBuilder();
-            movie.getGenre().forEach(m -> genres.append(m.toString() + " "));
-            values.put("Genre", genres.toString());
-            values.put("Director", movie.getDirector());
-            values.put("Writer", movie.getWriter());
-            values.put("Actors", movie.getActors());
-            values.put("Plot", movie.getPlot());
-            values.put("Language", movie.getLanguage());
-            values.put("Poster", movie.getPoster());
-            values.put("Duration", movie.getDuration());
-            values.put("estreno", movie.getEstreno()? 1 : 0);
-            id = db.insert(TABLE_MOVIES, null, values);
-        }
-        catch (Exception ex){
-            ex.toString();
-        }
-        return id;
-    } */
+
     public long insertMovie(Movie movie) {
         long id = 0;
         DbHelper dbHelper = new DbHelper(context);

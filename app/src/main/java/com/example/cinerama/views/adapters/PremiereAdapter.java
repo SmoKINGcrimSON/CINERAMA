@@ -14,7 +14,6 @@ import com.example.cinerama.R;
 import com.example.cinerama.models.Movie;
 import com.example.cinerama.utils.Tools;
 import com.example.cinerama.views.fragments.MovieFragment;
-
 import java.util.ArrayList;
 
 public class PremiereAdapter extends RecyclerView.Adapter<PremiereAdapter.PremiereViewHolder> {

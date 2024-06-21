@@ -1,7 +1,6 @@
 package com.example.cinerama.services;
 
 import androidx.annotation.NonNull;
-
 import com.example.cinerama.endpoints.MoviesAPI;
 import com.example.cinerama.models.Movie;
 import com.example.cinerama.utils.Tools;

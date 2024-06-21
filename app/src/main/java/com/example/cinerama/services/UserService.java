@@ -1,7 +1,6 @@
 package com.example.cinerama.services;
 
 import android.content.Context;
-
 import com.example.cinerama.endpoints.UserAPI;
 import com.example.cinerama.interceptors.UserInterceptor;
 import com.example.cinerama.models.User;

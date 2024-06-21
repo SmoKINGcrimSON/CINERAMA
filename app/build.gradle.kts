@@ -47,4 +47,8 @@ dependencies {
     implementation("androidx.viewpager2:viewpager2:1.1.0")
     //noinspection UseTomlInstead
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    //noinspection UseTomlInstead
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.1")
+    //noinspection UseTomlInstead
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1")
 }

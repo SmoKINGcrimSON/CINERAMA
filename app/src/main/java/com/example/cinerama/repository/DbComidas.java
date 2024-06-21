@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import androidx.annotation.Nullable;
 import com.example.cinerama.models.Comida;
-
 import java.util.ArrayList;
 
 public class DbComidas extends DbHelper{
@@ -15,25 +14,6 @@ public class DbComidas extends DbHelper{
         super(context);
         this.context = context;
     }
-    /*
-    public long insertarComida(Comida comida){
-        long id = 0;
-        try{
-            DbHelper dbHelper = new DbHelper(context);
-            SQLiteDatabase db = dbHelper.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put("id", comida.getId());
-            values.put("nombre", comida.getNombre());
-            values.put("descripcion", comida.getDescripcion());
-            values.put("foto", comida.getFoto());
-            values.put("precio", comida.getPrecio());
-            id = db.insert(TABLE_COMIDAS, null, values);
-        }
-        catch (Exception ex){
-            ex.toString();
-        }
-        return id;
-    } */
     public long insertarComida(Comida comida) {
         long id = 0;
         DbHelper dbHelper = new DbHelper(context);

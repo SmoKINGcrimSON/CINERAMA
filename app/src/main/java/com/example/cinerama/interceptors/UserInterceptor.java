@@ -1,11 +1,8 @@
 package com.example.cinerama.interceptors;
 
 import android.content.Context;
-
 import androidx.annotation.NonNull;
-
 import com.example.cinerama.repository.UserAuthentication;
-
 import java.io.IOException;
 import okhttp3.Interceptor;
 import okhttp3.Request;

@@ -14,27 +14,7 @@ public class DbProyecciones extends DbHelper{
         super(context);
         this.context = context;
     }
-    /*
-    public long insertProyeccion(Proyeccion proyeccion){
-        long id = 0;
-        try{
-            DbHelper dbHelper = new DbHelper(context);
-            SQLiteDatabase db = dbHelper.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put("id", proyeccion.getId());
-            values.put("hora", proyeccion.getHora());
-            values.put("formato", proyeccion.getFormato());
-            values.put("id_pelicula", proyeccion.getId_pelicula());
-            values.put("lenguaje", proyeccion.getLenguaje());
-            values.put("ciudad", proyeccion.getCinema().getCiudad());
-            values.put("avenida", proyeccion.getCinema().getAvenida());
-            id = db.insert(TABLE_PROYECCIONES, null, values);
-        }
-        catch (Exception ex){
-            ex.toString();
-        }
-        return id;
-    } */
+
     public long insertProyeccion(Proyeccion proyeccion) {
         long id = 0;
         DbHelper dbHelper = new DbHelper(context);

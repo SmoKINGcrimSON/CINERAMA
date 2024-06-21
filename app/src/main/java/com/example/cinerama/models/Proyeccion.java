@@ -1,7 +1,7 @@
 package com.example.cinerama.models;
 
-import java.io.Serializable;
 
+import java.io.Serializable;
 public class Proyeccion implements Serializable {
     private int id;
     private String hora;
@@ -9,7 +9,7 @@ public class Proyeccion implements Serializable {
     private String id_pelicula;
     private String lenguaje;
     private Cinema cinema;
-
+    private String fecha;
     public Proyeccion(int id, String hora, String formato, String id_pelicula, String lenguaje, Cinema cinema) {
         this.id = id;
         this.hora = hora;
@@ -17,6 +17,14 @@ public class Proyeccion implements Serializable {
         this.id_pelicula = id_pelicula;
         this.lenguaje = lenguaje;
         this.cinema = cinema;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
 
     public String getLenguaje() {

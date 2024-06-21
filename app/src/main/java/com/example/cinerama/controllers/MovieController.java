@@ -1,6 +1,5 @@
 package com.example.cinerama.controllers;
 
-import android.content.Context;
 import com.example.cinerama.models.Movie;
 import com.example.cinerama.repository.DbMovies;
 import com.example.cinerama.services.MovieService;
@@ -11,6 +10,7 @@ public class MovieController {
 
     private MovieService service;
     private DbMovies dbMovies;
+
     public MovieController(MovieService service, DbMovies dbMovies){
         this.service = service;
         this.dbMovies = dbMovies;

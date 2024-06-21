@@ -1,7 +1,6 @@
 package com.example.cinerama.models;
 
 import java.io.Serializable;
-import java.sql.Date;
 
 public class User implements Serializable {
     private String nickname;

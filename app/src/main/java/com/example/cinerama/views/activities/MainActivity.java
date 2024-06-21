@@ -30,7 +30,6 @@ import java.util.concurrent.CompletableFuture;
 
 public class MainActivity extends AppCompatActivity {
     //FIELDS
-    public static boolean isConnectedToInternet;
     private User user;
     private ArrayList<Movie> movies;
     private MovieController controller;
@@ -49,17 +48,10 @@ public class MainActivity extends AppCompatActivity {
         //initialize variables
         controller = new MovieController(new MovieService("https://663b85f9fee6744a6ea1f43e.mockapi.io"), new DbMovies(this)); //injection controller
         currentButton = null;
-        isConnectedToInternet = false;
         //networkChangeObserver
         NetworkChangeObserver networkChangeObserver = new NetworkChangeObserver(connected -> {
-            if (connected) {
-                this.isConnectedToInternet = true;
-                getMoviesWithNetwork();
-            }
-            else{
-                this.isConnectedToInternet = false;
-                getMoviesWithoutNetwork();
-            }
+            if (connected) getMoviesWithNetwork();
+            else getMoviesWithoutNetwork();
         });
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkChangeObserver, filter);

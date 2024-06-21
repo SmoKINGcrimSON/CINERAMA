@@ -46,8 +46,8 @@ public class MovieFragment extends Fragment {
         ((AppCompatActivity) getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_movie, MovieInfoFragment.newInstance(movie))
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
-        Tools.changeButtonColor(currentButton, (Button) view.findViewById(R.id.btn_info));
-        currentButton = (Button) view.findViewById(R.id.btn_info);
+        Tools.changeButtonColor(currentButton, view.findViewById(R.id.btn_info));
+        currentButton = view.findViewById(R.id.btn_info);
         ////BUTTONS
         Button btn_info = view.findViewById(R.id.btn_info);
         Button btn_comprar = view.findViewById(R.id.btn_comprar);

@@ -12,7 +12,6 @@ import com.example.cinerama.R;
 import com.example.cinerama.models.Proyeccion;
 import com.example.cinerama.utils.Tools;
 import com.example.cinerama.views.activities.SalaActivity;
-
 import java.util.ArrayList;
 
 public class ProyeccionAdapter extends RecyclerView.Adapter<ProyeccionAdapter.ProyeccionViewHolder> {
