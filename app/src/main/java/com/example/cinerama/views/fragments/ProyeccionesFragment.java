@@ -108,6 +108,7 @@ public class ProyeccionesFragment extends Fragment implements Serializable {
         events(view);
     }
 
+    //render
     private void renderProyeccions(){
         if(proyeccions == null) return;
         Tools.genFragment((AppCompatActivity) getContext(), HorariosFragment.newInstance(proyeccions), proyeccions, R.id.frame_layout_proyecciones);
@@ -128,6 +129,7 @@ public class ProyeccionesFragment extends Fragment implements Serializable {
         Tools.genFragment((AppCompatActivity) getContext(), HorariosFragment.newInstance(proyeccions), proyeccions, R.id.frame_layout_proyecciones);
     }
 
+    //events
     private void events(View view){
         //elements
         ImageButton btn_location = view.findViewById(R.id.btn_location);

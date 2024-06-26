@@ -21,6 +21,10 @@ public class ProyeccionController {
         this.movie_id = movie_id;
     }
 
+    public ProyeccionController(){
+
+    }
+
     public CompletableFuture<ArrayList<Proyeccion>> fetchMovies(){
         return CompletableFuture.supplyAsync(() -> service.getProyecciones())
                 .thenCompose(p -> p)
@@ -37,6 +41,8 @@ public class ProyeccionController {
     public ArrayList<Proyeccion> getProyeccionsFromDB(){
         ArrayList<Proyeccion> proyeccions = dbProyecciones.readProyecciones();
         proyeccions = filterProyeccionByMovie(proyeccions);
+        assert proyeccions != null;
+        proyeccions = filterProyeccionByDate(proyeccions);
         return proyeccions;
     }
 
@@ -66,23 +72,20 @@ public class ProyeccionController {
     }
 
     public ArrayList<Proyeccion> filterProyeccionByDay(ArrayList<Proyeccion> proyeccions, String filter){ //day
-        return proyeccions.stream().filter(p -> {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                if(filter.equalsIgnoreCase("hoy")){
-                    LocalDateTime dateProyeccion = LocalDateTime.parse(p.getFecha(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-                    LocalDateTime datePresent = LocalDateTime.now();
-                    return datePresent.toLocalDate().isEqual(dateProyeccion.toLocalDate()); //filter for this day and future proyeccions
-                }
-                else {
-                    // Filter for tomorrow's projections
-                    LocalDateTime dateProyeccion = LocalDateTime.parse(p.getFecha(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-                    LocalDateTime datePresent = LocalDateTime.now();
-                    LocalDateTime startOfTomorrow = datePresent.plusDays(1).toLocalDate().atStartOfDay();
-                    LocalDateTime endOfTomorrow = datePresent.plusDays(1).toLocalDate().atTime(23, 59, 59);
-                    return dateProyeccion.isAfter(startOfTomorrow) && dateProyeccion.isBefore(endOfTomorrow); // Filter for tomorrow's projections
-                }
+        return proyeccions.stream().filter(p -> whenMovieWillProject(p).equalsIgnoreCase(filter)).collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public String whenMovieWillProject(Proyeccion p){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            LocalDateTime dateProyeccion = LocalDateTime.parse(p.getFecha(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            LocalDateTime datePresent = LocalDateTime.now();
+            if(datePresent.toLocalDate().isEqual(dateProyeccion.toLocalDate())) return "hoy";
+            else{
+                LocalDateTime startOfTomorrow = datePresent.plusDays(1).toLocalDate().atStartOfDay();
+                LocalDateTime endOfTomorrow = datePresent.plusDays(1).toLocalDate().atTime(23, 59, 59);
+                if(dateProyeccion.isAfter(startOfTomorrow) && dateProyeccion.isBefore(endOfTomorrow)) return "mañana";
             }
-            else return false;
-        }).collect(Collectors.toCollection(ArrayList::new));
+        }
+        return "undefined";
     }
 }
