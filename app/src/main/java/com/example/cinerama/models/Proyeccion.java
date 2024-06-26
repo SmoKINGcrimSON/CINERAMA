@@ -4,19 +4,18 @@ package com.example.cinerama.models;
 import java.io.Serializable;
 public class Proyeccion implements Serializable {
     private int id;
-    private String hora;
     private String formato;
     private String id_pelicula;
     private String lenguaje;
     private Cinema cinema;
     private String fecha;
-    public Proyeccion(int id, String hora, String formato, String id_pelicula, String lenguaje, Cinema cinema) {
+    public Proyeccion(int id, String formato, String id_pelicula, String lenguaje, Cinema cinema, String fecha) {
         this.id = id;
-        this.hora = hora;
         this.formato = formato;
         this.id_pelicula = id_pelicula;
         this.lenguaje = lenguaje;
         this.cinema = cinema;
+        this.fecha = fecha;
     }
 
     public String getFecha() {
@@ -49,14 +48,6 @@ public class Proyeccion implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getHora() {
-        return hora;
-    }
-
-    public void setHora(String hora) {
-        this.hora = hora;
     }
 
     public String getFormato() {

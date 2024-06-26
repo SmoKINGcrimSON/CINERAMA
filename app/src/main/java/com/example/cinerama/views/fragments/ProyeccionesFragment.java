@@ -21,6 +21,7 @@ import com.example.cinerama.services.ProyeccionService;
 import com.example.cinerama.models.Proyeccion;
 import com.example.cinerama.utils.NetworkChangeObserver;
 import com.example.cinerama.utils.Tools;
+import com.example.cinerama.views.activities.CalendarActivity;
 import com.example.cinerama.views.activities.LocationActivity;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,8 +30,10 @@ import java.util.concurrent.CompletableFuture;
 public class ProyeccionesFragment extends Fragment implements Serializable {
 
     public ArrayList<Proyeccion> proyeccions;
-    private String filter;
-    private ActivityResultLauncher<Intent> launcher;
+    private String filterCity = null;
+    private String filterCalendar = null;
+    private ActivityResultLauncher<Intent> launcherCity;
+    private ActivityResultLauncher<Intent> launcherCalendar;
     private static final String ARG_ID_MOVIE = "movie_id";
     private String movie_id = "";
     private ProyeccionController controller;
@@ -47,19 +50,30 @@ public class ProyeccionesFragment extends Fragment implements Serializable {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) movie_id = (String) getArguments().getSerializable(ARG_ID_MOVIE);
-        //ActivityResultLauncher
-        launcher = registerForActivityResult(
+        //city launcher
+        launcherCity = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == AppCompatActivity.RESULT_OK) {
                         Intent data = result.getData();
                         if (data != null) {
-                            filter = data.getStringExtra("filtro");
+                            filterCity = data.getStringExtra("filtro");
                             applyFilterAndRender(); //render again
                         }
                     }
                 }
         );
+        //calendar launcher
+        launcherCalendar = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(), result -> {
+                   if(result.getResultCode() == AppCompatActivity.RESULT_OK) {
+                       Intent data = result.getData();
+                       if(data != null){
+                           filterCalendar = data.getStringExtra("filtro");
+                           applyFilterAndRender(); //render again
+                       }
+                   }
+                });
         //controller
         controller = new ProyeccionController(new ProyeccionService("https://663b85f9fee6744a6ea1f43e.mockapi.io"),
                 new DbProyecciones(getContext()), movie_id);
@@ -100,7 +114,13 @@ public class ProyeccionesFragment extends Fragment implements Serializable {
     }
 
     private void applyFilterAndRender() {
-        ArrayList<Proyeccion> filterProyeccions = controller.filterProyeccionByCity(proyeccions, filter);
+        ArrayList<Proyeccion> filterProyeccions = proyeccions;
+        if(filterCity != null){
+            filterProyeccions = controller.filterProyeccionByCity(filterProyeccions, filterCity);
+        }
+        if(filterCalendar != null){
+            filterProyeccions = controller.filterProyeccionByDay(filterProyeccions, filterCalendar);
+        }
         Tools.genFragment((AppCompatActivity) getContext(), HorariosFragment.newInstance(filterProyeccions), filterProyeccions, R.id.frame_layout_proyecciones);
     }
 
@@ -112,11 +132,16 @@ public class ProyeccionesFragment extends Fragment implements Serializable {
         //elements
         ImageButton btn_location = view.findViewById(R.id.btn_location);
         ImageButton btn_clear_filters = view.findViewById(R.id.btn_clear_filters);
+        ImageButton btn_date = view.findViewById(R.id.btn_date);
         //events
+        btn_clear_filters.setOnClickListener(e -> clearFilterAndRender());
         btn_location.setOnClickListener(e -> {
             Intent intent = Tools.getActivity((AppCompatActivity) getContext(), LocationActivity.class, proyeccions,"proyeccions");
-            launcher.launch(intent);
+            launcherCity.launch(intent);
         });
-        btn_clear_filters.setOnClickListener(e -> clearFilterAndRender());
+        btn_date.setOnClickListener(e -> {
+            Intent intent = Tools.getActivity((AppCompatActivity) getContext(), CalendarActivity.class, proyeccions, "proyeccions");
+            launcherCalendar.launch(intent);
+        });
     }
 }

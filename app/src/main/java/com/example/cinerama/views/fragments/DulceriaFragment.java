@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +69,12 @@ public class DulceriaFragment extends Fragment {
     }
     private void getComidaWithoutNetwork(){
         this.comidas = this.controller.getComidaFromDB();
-        chargeInitialContent();
+        try{
+            chargeInitialContent(); //when connectivity is changing could cause troubles!
+        }
+        catch (Exception ex){
+            Log.d("EXCEPTION", ex.getMessage());
+        }
     }
     private void chargeInitialContent(){
         ComidaAdapter adapter = new ComidaAdapter(getContext(), comidas);

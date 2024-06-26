@@ -124,7 +124,6 @@ public class SalaActivity extends AppCompatActivity {
 
                 constraintSet.constrainWidth(button.getId(), ConstraintSet.WRAP_CONTENT);
                 constraintSet.constrainHeight(button.getId(), ConstraintSet.WRAP_CONTENT);
-
                 constraintSet.connect(button.getId(), ConstraintSet.TOP, horizontalGuidelines[i].getId(), ConstraintSet.BOTTOM, MARGIN / 2);
                 constraintSet.connect(button.getId(), ConstraintSet.BOTTOM, horizontalGuidelines[i + 1].getId(), ConstraintSet.TOP, MARGIN / 2);
                 constraintSet.connect(button.getId(), ConstraintSet.START, verticalGuidelines[j].getId(), ConstraintSet.END, MARGIN / 2);

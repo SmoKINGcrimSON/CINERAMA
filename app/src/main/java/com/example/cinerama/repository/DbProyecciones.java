@@ -21,12 +21,12 @@ public class DbProyecciones extends DbHelper{
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("id", proyeccion.getId());
-        values.put("hora", proyeccion.getHora());
         values.put("formato", proyeccion.getFormato());
         values.put("id_pelicula", proyeccion.getId_pelicula());
         values.put("lenguaje", proyeccion.getLenguaje());
         values.put("ciudad", proyeccion.getCinema().getCiudad());
         values.put("avenida", proyeccion.getCinema().getAvenida());
+        values.put("fecha", proyeccion.getFecha());
 
         try {
             // Comprobar si la proyección ya existe en la base de datos
@@ -65,8 +65,8 @@ public class DbProyecciones extends DbHelper{
         if(cursorProyecciones.moveToFirst()){
             do{
                 //create Cinema
-                String ciudad = cursorProyecciones.getString(5);
-                String avenida = cursorProyecciones.getString(6);
+                String ciudad = cursorProyecciones.getString(4);
+                String avenida = cursorProyecciones.getString(5);
                 Proyeccion.Cinema cinema = new Proyeccion.Cinema(ciudad, avenida);
                 //fill proyeccion
                 proyeccion = new Proyeccion(
@@ -74,8 +74,8 @@ public class DbProyecciones extends DbHelper{
                         cursorProyecciones.getString(1),
                         cursorProyecciones.getString(2),
                         cursorProyecciones.getString(3),
-                        cursorProyecciones.getString(4),
-                        cinema
+                        cinema,
+                        cursorProyecciones.getString(6)
                 );
                 proyecciones.add(proyeccion);
             }

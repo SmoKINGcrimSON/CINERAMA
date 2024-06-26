@@ -27,10 +27,10 @@ public class ProyeccionController {
                 .thenApply(p -> {
                     p = filterProyeccionByMovie(p);
                     assert p != null;
-                    p = filterProyeccionByDay(p);
+                    p = filterProyeccionByDate(p);
                     assert p != null;
                     PersistenceData(p);
-                    return getProyeccionsFromDB();
+                    return p; //getProyeccionsFromDB()
                 });
     }
 
@@ -54,12 +54,33 @@ public class ProyeccionController {
         return proyeccions.stream().filter(p -> p.getId_pelicula().equals(movie_id)).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    private ArrayList<Proyeccion> filterProyeccionByDay(ArrayList<Proyeccion> proyeccions){
+    private ArrayList<Proyeccion> filterProyeccionByDate(ArrayList<Proyeccion> proyeccions){ //schedule
         return proyeccions.stream().filter(p -> {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 LocalDateTime dateProyeccion = LocalDateTime.parse(p.getFecha(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
                 LocalDateTime datePresent = LocalDateTime.now();
-                return datePresent.isBefore(dateProyeccion) && datePresent.toLocalDate().isEqual(dateProyeccion.toLocalDate()); //filter for this day and future proyeccions
+                return datePresent.isBefore(dateProyeccion); //filter for this day and future proyeccions
+            }
+            else return false;
+        }).collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public ArrayList<Proyeccion> filterProyeccionByDay(ArrayList<Proyeccion> proyeccions, String filter){ //day
+        return proyeccions.stream().filter(p -> {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                if(filter.equalsIgnoreCase("hoy")){
+                    LocalDateTime dateProyeccion = LocalDateTime.parse(p.getFecha(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                    LocalDateTime datePresent = LocalDateTime.now();
+                    return datePresent.toLocalDate().isEqual(dateProyeccion.toLocalDate()); //filter for this day and future proyeccions
+                }
+                else {
+                    // Filter for tomorrow's projections
+                    LocalDateTime dateProyeccion = LocalDateTime.parse(p.getFecha(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                    LocalDateTime datePresent = LocalDateTime.now();
+                    LocalDateTime startOfTomorrow = datePresent.plusDays(1).toLocalDate().atStartOfDay();
+                    LocalDateTime endOfTomorrow = datePresent.plusDays(1).toLocalDate().atTime(23, 59, 59);
+                    return dateProyeccion.isAfter(startOfTomorrow) && dateProyeccion.isBefore(endOfTomorrow); // Filter for tomorrow's projections
+                }
             }
             else return false;
         }).collect(Collectors.toCollection(ArrayList::new));

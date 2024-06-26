@@ -22,7 +22,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
+            app:layout_constraintGuide_percent="0.33" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/v2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.66" />
 
         <ImageButton
             android:id="@+id/btn_location"
@@ -48,9 +55,23 @@
             android:src="@drawable/clear_filter_icon"
             app:layout_constraintBottom_toTopOf="@+id/h1"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/v2"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+        <ImageButton
+            android:id="@+id/btn_date"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="5dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/calendar"
+            app:layout_constraintBottom_toTopOf="@+id/h1"
+            app:layout_constraintEnd_toStartOf="@+id/v2"
             app:layout_constraintStart_toStartOf="@+id/v1"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck"/>
+            tools:ignore="ContentDescription" />
 
         <FrameLayout
             android:id="@+id/frame_layout_proyecciones"
@@ -63,5 +84,6 @@
             app:layout_constraintTop_toTopOf="@+id/h1">
 
         </FrameLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 5; //change when new table or columns are added or discarded
+    private static final int DATABASE_VERSION = 8; //change when new table or columns are added or discarded
     private static final String DATABASE_NAME = "movies.db";
     public static final String TABLE_MOVIES = "Movie";
     public static final String TABLE_PROYECCIONES = "Proyeccion";
@@ -36,12 +36,12 @@ public class DbHelper extends SQLiteOpenHelper {
         ///TABLE PROYECCION
         db.execSQL("CREATE TABLE " + TABLE_PROYECCIONES + "(" +
                 "id INTEGER PRIMARY KEY," +
-                "hora STRING," +
                 "formato STRING," +
                 "id_pelicula STRING," +
                 "lenguaje STRING," +
                 "ciudad STRING," +
-                "avenida STRING)");
+                "avenida STRING," +
+                "fecha STRING)");
         ///TABLE COMIDA
         db.execSQL("CREATE TABLE " + TABLE_COMIDAS + "(" +
                 "id INTEGER PRIMARY KEY," +

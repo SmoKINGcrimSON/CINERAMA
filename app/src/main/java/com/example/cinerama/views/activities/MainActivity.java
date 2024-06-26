@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Movie> movies;
     private MovieController controller;
     private ImageButton currentButton;
+    private NetworkChangeObserver networkChangeObserver;
     //METHODS
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         controller = new MovieController(new MovieService("https://663b85f9fee6744a6ea1f43e.mockapi.io"), new DbMovies(this)); //injection controller
         currentButton = null;
         //networkChangeObserver
-        NetworkChangeObserver networkChangeObserver = new NetworkChangeObserver(connected -> {
+        this.networkChangeObserver = new NetworkChangeObserver(connected -> {
             if (connected) getMoviesWithNetwork();
             else getMoviesWithoutNetwork();
         });
@@ -125,5 +126,12 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, HomeFragment.newInstance(this.movies)).addToBackStack(null).commit();
         Tools.changeButtonColor(currentButton, findViewById(R.id.btn_home), "#000000", "#FFFFFF");
         currentButton = findViewById(R.id.btn_home);
+    }
+
+    //DELETE
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(networkChangeObserver);
     }
 }
