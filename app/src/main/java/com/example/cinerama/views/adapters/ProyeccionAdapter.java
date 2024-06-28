@@ -48,7 +48,7 @@ public class ProyeccionAdapter extends RecyclerView.Adapter<ProyeccionAdapter.Pr
         holder.formato.setText(proyeccions.get(position).getFormato());
         holder.cine.setText(proyeccions.get(position).getCinema().getCiudad() + ", " + proyeccions.get(position).getCinema().getAvenida());
         holder.fecha.setText(fecha);
-        holder.itemView.setOnClickListener(c -> Tools.genActivity((AppCompatActivity) context, SalaActivity.class, "asd", "asd"));
+        holder.itemView.setOnClickListener(c -> Tools.genActivity((AppCompatActivity) context, SalaActivity.class, proyeccions.get(position).getId(), "proyeccion_id"));
     }
 
     @Override
