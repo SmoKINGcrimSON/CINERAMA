@@ -1,13 +1,18 @@
 package com.example.cinerama.views.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.constraintlayout.widget.Guideline;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +21,8 @@ import android.widget.ImageView;
 import com.example.cinerama.R;
 import com.example.cinerama.models.Silla;
 import com.example.cinerama.services.SalaService;
+import com.example.cinerama.views.activities.SalaActivity;
+
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -180,6 +187,16 @@ public class SalaFragment extends Fragment {
                     if (asientoSala.trim().equalsIgnoreCase(asiento.trim())) {
                         if (sala.get(positionSala).isDisponible()) {
                             button.setBackgroundColor(Color.parseColor("#5E6AFD"));
+                            ///code return values!!!
+                            button.setOnClickListener(l -> {
+                                SalaActivity activity = (SalaActivity) getActivity();
+                                boolean comprar = activity.asientos.stream().anyMatch(a -> a.equalsIgnoreCase(asiento));
+                                if(comprar) return;
+                                activity.asientos.add(asiento);
+                                Log.d("Asientos", activity.asientos.get(activity.asientos.size() - 1));
+                                button.setBackgroundColor(Color.parseColor("#7aff33"));
+                                activity.btn_comprar.setEnabled(true);
+                            });
                         } else {
                             button.setBackgroundColor(Color.parseColor("#FD6C5E"));
                         }
