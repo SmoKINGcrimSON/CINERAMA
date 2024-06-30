@@ -190,10 +190,14 @@ public class SalaFragment extends Fragment {
                             ///code return values!!!
                             button.setOnClickListener(l -> {
                                 SalaActivity activity = (SalaActivity) getActivity();
-                                boolean comprar = activity.asientos.stream().anyMatch(a -> a.equalsIgnoreCase(asiento));
+                                boolean comprar =
+                                        activity.asientos
+                                                .stream()
+                                                .anyMatch(a -> a.getFila().concat(Integer.toString(a.getColumna()))
+                                                        .equalsIgnoreCase(asiento));
                                 if(comprar) return;
-                                activity.asientos.add(asiento);
-                                Log.d("Asientos", activity.asientos.get(activity.asientos.size() - 1));
+                                activity.asientos.add(sillaActual); //asiento
+                                //Log.d("Asientos", activity.asientos.get(activity.asientos.size() - 1));
                                 button.setBackgroundColor(Color.parseColor("#7aff33"));
                                 activity.btn_comprar.setEnabled(true);
                             });

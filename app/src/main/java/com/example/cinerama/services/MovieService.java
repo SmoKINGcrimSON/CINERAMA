@@ -33,4 +33,21 @@ public class MovieService {
         });
         return movies;
     }
+
+    public CompletableFuture<Movie> getMovie(String id){
+        CompletableFuture<Movie> movie = new CompletableFuture<>();
+        Call<Movie> call = apiService.getMovie(id);
+        call.enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(Call<Movie> call, Response<Movie> response) {
+                movie.complete(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Movie> call, Throwable throwable) {
+                movie.completeExceptionally(throwable);
+            }
+        });
+        return movie;
+    }
 }

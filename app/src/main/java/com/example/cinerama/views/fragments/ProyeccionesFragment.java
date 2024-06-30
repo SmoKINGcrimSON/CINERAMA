@@ -30,6 +30,7 @@ import java.util.concurrent.CompletableFuture;
 public class ProyeccionesFragment extends Fragment implements Serializable {
 
     public ArrayList<Proyeccion> proyeccions;
+    public ArrayList<Proyeccion> proyeccionsToday;
     private String filterCity = null;
     private String filterCalendar = null;
     private ActivityResultLauncher<Intent> launcherCity;
@@ -95,11 +96,13 @@ public class ProyeccionesFragment extends Fragment implements Serializable {
                         .thenCompose(p -> p)
                         .thenAccept(p -> {
                             this.proyeccions = p;
+                            this.proyeccionsToday = controller.filterProyeccionByDay(this.proyeccions, "hoy");
                             renderProyeccions();
                         });
             }
             else{
                 this.proyeccions = controller.getProyeccionsFromDB();
+                this.proyeccionsToday = controller.filterProyeccionByDay(this.proyeccions, "hoy");
                 renderProyeccions();
             }
         });
@@ -111,7 +114,7 @@ public class ProyeccionesFragment extends Fragment implements Serializable {
     //render
     private void renderProyeccions(){
         if(proyeccions == null) return;
-        Tools.genFragment((AppCompatActivity) getContext(), HorariosFragment.newInstance(proyeccions), proyeccions, R.id.frame_layout_proyecciones);
+        Tools.genFragment((AppCompatActivity) getContext(), HorariosFragment.newInstance(proyeccionsToday), proyeccionsToday, R.id.frame_layout_proyecciones);
     }
 
     private void applyFilterAndRender() {
@@ -126,7 +129,7 @@ public class ProyeccionesFragment extends Fragment implements Serializable {
     }
 
     private void clearFilterAndRender() {
-        Tools.genFragment((AppCompatActivity) getContext(), HorariosFragment.newInstance(proyeccions), proyeccions, R.id.frame_layout_proyecciones);
+        Tools.genFragment((AppCompatActivity) getContext(), HorariosFragment.newInstance(proyeccionsToday), proyeccionsToday, R.id.frame_layout_proyecciones);
     }
 
     //events

@@ -1,31 +1,32 @@
 package com.example.cinerama.views.activities;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
-import android.widget.QuickContactBadge;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import com.example.cinerama.R;
+import com.example.cinerama.models.Proyeccion;
 import com.example.cinerama.models.Silla;
-import com.example.cinerama.utils.Tools;
+import com.example.cinerama.repository.UserData;
+import com.example.cinerama.services.MovieService;
+import com.example.cinerama.utils.NetworkChangeObserver;
 import com.example.cinerama.views.fragments.SalaFragment;
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
 
 public class SalaActivity extends AppCompatActivity {
-    public ArrayList<String> asientos = new ArrayList<>();
-    private static final int ROWS = 10;
-    private static final int COLUMNS = 8;
-    private ArrayList<Silla> sala;
-    private int proyeccion_id;
+    public ArrayList<Silla> asientos = new ArrayList<>(); //String
     public Button btn_comprar;
+    private Proyeccion proyeccion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,31 +38,29 @@ public class SalaActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        //launcher
-        ActivityResultLauncher<Intent> lancher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == AppCompatActivity.RESULT_OK) {
-                        Intent data = result.getData();
-                        if (data != null) {
-                            asientos.add(data.getStringExtra("asiento"));
-                            Log.d("ASIENTO", asientos.get(asientos.size() - 1));
-                        }
-                    }
-                }
-        );
-        //data Intent
+        //data recover from Intent
         Intent intent = getIntent();
-        proyeccion_id = intent.getIntExtra("proyeccion_id", -1);
+        proyeccion = (Proyeccion) intent.getSerializableExtra("proyeccion");
         //charge fragment
-        getSupportFragmentManager().beginTransaction().replace(R.id.sala_id, SalaFragment.newInstance(this.proyeccion_id)).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.sala_id, SalaFragment.newInstance(this.proyeccion.getId())).addToBackStack(null).commit();
         //btn comprar
         this.btn_comprar = findViewById(R.id.btn_comprar);
         btn_comprar.setEnabled(false); //desactivar
         //lanzar actividad comprar
         btn_comprar.setOnClickListener(l -> {
-            ///pasar asientos a nueva actividad
-            Tools.genActivity(this, CompraActivity.class, asientos, "asientos");
+            NetworkChangeObserver networkChangeObserver = new NetworkChangeObserver(connected -> {
+                if (connected && !new UserData(this).getUser().getEmail().isBlank()){
+                    Intent newIntent = new Intent(this, CompraActivity.class);
+                    newIntent.putExtra("asientos", asientos);
+                    newIntent.putExtra("proyeccion", proyeccion);
+                    startActivity(newIntent);
+                }
+                else{
+                    this.finish();
+                }
+            });
+            IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+            this.registerReceiver(networkChangeObserver, filter);
         });
     }
 }

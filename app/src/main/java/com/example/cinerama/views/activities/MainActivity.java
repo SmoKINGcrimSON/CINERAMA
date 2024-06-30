@@ -20,6 +20,7 @@ import com.example.cinerama.models.Movie;
 import com.example.cinerama.models.User;
 import com.example.cinerama.utils.NetworkChangeObserver;
 import com.example.cinerama.utils.Tools;
+import com.example.cinerama.views.fragments.CompraExitosaFragment;
 import com.example.cinerama.views.fragments.DulceriaFragment;
 import com.example.cinerama.views.fragments.HomeFragment;
 import com.example.cinerama.views.fragments.InfoEmpresaFragment;
@@ -88,7 +89,12 @@ public class MainActivity extends AppCompatActivity {
             currentButton = findViewById(R.id.btn_candies);
         });
         ((ImageButton) findViewById(R.id.btn_more_info)).setOnClickListener(e -> {
-            Tools.genFragment(this, InfoEmpresaFragment.newInstance(), "dulces", R.id.frame_layout);
+            if(new UserData(this).getUser().getEmail().isBlank()){
+                Tools.genFragment(this, InfoEmpresaFragment.newInstance(), "dulces", R.id.frame_layout);
+            }
+            else{
+                Tools.genFragment(this, CompraExitosaFragment.newInstance(false), "", R.id.frame_layout);
+            }
             Tools.changeButtonColor(currentButton, findViewById(R.id.btn_more_info), "#000000", "#FFFFFF");
             currentButton = findViewById(R.id.btn_more_info);
         });

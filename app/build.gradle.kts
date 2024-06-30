@@ -51,4 +51,6 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.17.1")
     //noinspection UseTomlInstead
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1")
+    //noinspection UseTomlInstead
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 }

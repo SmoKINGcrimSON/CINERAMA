@@ -1,19 +1,28 @@
 package com.example.cinerama.views.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.cinerama.R;
 import com.example.cinerama.controllers.ProyeccionController;
 import com.example.cinerama.models.Proyeccion;
+import com.example.cinerama.repository.UserData;
+import com.example.cinerama.utils.NetworkChangeObserver;
 import com.example.cinerama.utils.Tools;
+import com.example.cinerama.views.activities.MainActivity;
 import com.example.cinerama.views.activities.SalaActivity;
 import java.util.ArrayList;
 
@@ -48,7 +57,11 @@ public class ProyeccionAdapter extends RecyclerView.Adapter<ProyeccionAdapter.Pr
         holder.formato.setText(proyeccions.get(position).getFormato());
         holder.cine.setText(proyeccions.get(position).getCinema().getCiudad() + ", " + proyeccions.get(position).getCinema().getAvenida());
         holder.fecha.setText(fecha);
-        holder.itemView.setOnClickListener(c -> Tools.genActivity((AppCompatActivity) context, SalaActivity.class, proyeccions.get(position).getId(), "proyeccion_id"));
+        holder.itemView.setOnClickListener(c -> {
+            Intent intent = new Intent(context, SalaActivity.class);
+            intent.putExtra("proyeccion", proyeccions.get(position));
+            context.startActivity(intent);
+        });
     }
 
     @Override

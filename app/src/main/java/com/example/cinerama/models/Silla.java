@@ -3,14 +3,14 @@ package com.example.cinerama.models;
 import java.io.Serializable;
 
 public class Silla implements Serializable {
-    private int id;
+    private String id;
     private int proyeccion_id;
     private int columna;
     private String fila;
     private boolean disponible;
 
-    public Silla(int id, int proyeccion_id, int columna, String fila, boolean disponible) {
-        this.id = proyeccion_id;
+    public Silla(String id, int proyeccion_id, int columna, String fila, boolean disponible) {
+        this.id = id;
         this.columna = columna;
         this.fila = fila;
         this.disponible = disponible;
@@ -43,11 +43,11 @@ public class Silla implements Serializable {
         this.disponible = disponible;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

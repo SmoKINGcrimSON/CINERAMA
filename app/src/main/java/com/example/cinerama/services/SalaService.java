@@ -1,5 +1,7 @@
 package com.example.cinerama.services;
 
+import android.util.Log;
+
 import com.example.cinerama.endpoints.SalaAPI;
 import com.example.cinerama.models.Silla;
 import com.example.cinerama.utils.Tools;
@@ -32,5 +34,24 @@ public class SalaService {
             }
         });
         return sala;
+    }
+
+    public CompletableFuture<Silla> updateSilla(String id, Silla s){
+        CompletableFuture<Silla> silla = new CompletableFuture<>();
+        Call<Silla> call = apiService.updateSilla(id, s);
+        call.enqueue(new Callback<Silla>() {
+            @Override
+            public void onResponse(Call<Silla> call, Response<Silla> response) {
+                if(response.isSuccessful()){
+                    silla.complete(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Silla> call, Throwable throwable) {
+                silla.completeExceptionally(throwable);
+            }
+        });
+        return silla;
     }
 }
