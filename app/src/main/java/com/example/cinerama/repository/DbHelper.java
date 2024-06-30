@@ -6,11 +6,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 8; //change when new table or columns are added or discarded
+    private static final int DATABASE_VERSION = 9; //change when new table or columns are added or discarded
     private static final String DATABASE_NAME = "movies.db";
     public static final String TABLE_MOVIES = "Movie";
     public static final String TABLE_PROYECCIONES = "Proyeccion";
     public static final String TABLE_COMIDAS = "Comida";
+    public static final String TABLE_BOLETOS = "Boleto";
     public DbHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -49,6 +50,15 @@ public class DbHelper extends SQLiteOpenHelper {
                 "descripcion STRING," +
                 "foto STRING," +
                 "precio FLOAT)");
+        ///TABLE BOLETA
+        db.execSQL("CREATE TABLE " + TABLE_BOLETOS + "(" +
+                "id STRING PRIMARY KEY," +
+                "qr STRING," +
+                "pelicula_id INTEGER," +
+                "proyeccion_id INTEGER," +
+                "user_email STRING," +
+                "asiento STRING," +
+                "horario STRING)");
     }
 
     @Override
@@ -56,6 +66,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MOVIES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROYECCIONES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_COMIDAS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOLETOS);
         onCreate(db);
     }
 }
