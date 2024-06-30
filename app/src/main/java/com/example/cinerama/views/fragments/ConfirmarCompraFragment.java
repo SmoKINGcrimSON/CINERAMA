@@ -122,21 +122,23 @@ public class ConfirmarCompraFragment extends Fragment {
     ///generar boleto (POST) y actualizar sillas (PUT)
     private void crearBoleto(){
         CompletableFuture.runAsync(() -> {
-            //create services
+            // Create services
             BoletoService boletoService = new BoletoService("https://664f5090fafad45dfae3489d.mockapi.io");
             SalaService salaService = new SalaService("https://664f5090fafad45dfae3489d.mockapi.io");
-            //recover user from shared preferences
-            User user = new UserData(getContext()).getUser();
-            //list for save futures
-            ArrayList<CompletableFuture<?>> futures = new ArrayList<>(); //Boleto
 
-            //create and save futures!
+            // Recover user from shared preferences
+            User user = new UserData(getContext()).getUser();
+
+            // List to save futures
+            ArrayList<CompletableFuture<?>> futures = new ArrayList<>();
+
+            // Create and save futures!
             asientos.forEach(a -> {
                 String asiento = a.getFila() + a.getColumna();
 
                 CompletableFuture<Boleto> futureBoleto = CompletableFuture.supplyAsync(() -> {
                     try {
-                        Boleto boleto = new Boleto(1, UUID.randomUUID().toString(), movie.getId(), proyeccion.getId(), user.getEmail(), asiento);
+                        Boleto boleto = new Boleto(1, UUID.randomUUID().toString(), movie.getId(), proyeccion.getId(), user.getEmail(), asiento, proyeccion.getFecha());
                         return boletoService.crearBoleto(boleto).join();
                     } catch (Exception e) {
                         Log.e("Error", "Error creando boleto para asiento: " + asiento, e);
@@ -151,26 +153,25 @@ public class ConfirmarCompraFragment extends Fragment {
                         a.setDisponible(false);
                         return salaService.updateSilla(a.getId(), a).join();
                     } catch (Exception e) {
-                        Log.e("Error", "Error actualizando  el asiento: " + asiento, e);
+                        Log.e("Error", "Error actualizando el asiento: " + asiento, e);
                         throw new RuntimeException(e);
                     }
                 });
 
                 futures.add(futureSilla);
-                ///
             });
 
-            // wait for all futures be completed
+            // Wait for all futures to be completed
             CompletableFuture<Void> allFutures = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
 
-            //manage end of all futures
+            // Manage end of all futures
             allFutures.thenRun(() -> {
                 boolean allSuccessful = futures.stream().allMatch(CompletableFuture::isDone) &&
                         futures.stream().noneMatch(CompletableFuture::isCompletedExceptionally);
                 if (allSuccessful) {
                     Log.d("Terminado", "Todos los boletos creados exitosamente.");
                     CompraActivity activity = (CompraActivity) getActivity();
-                    activity.thirdStep(); //ejecutar lo último luego de una compra exitosa
+                    activity.thirdStep(); // Execute the last step after a successful purchase
                 } else {
                     Log.e("Error", "Ocurrió un error en la creación de los boletos.");
                 }
@@ -179,5 +180,6 @@ public class ConfirmarCompraFragment extends Fragment {
                 return null;
             });
         });
+
     }
 }

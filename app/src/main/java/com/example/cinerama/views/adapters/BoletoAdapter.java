@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,18 +14,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.cinerama.R;
 import com.example.cinerama.models.Boleto;
+import com.example.cinerama.models.Movie;
 import com.google.zxing.BarcodeFormat;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class BoletoAdapter extends RecyclerView.Adapter<BoletoAdapter.BoletoViewHolher> {
     private Context context;
     private ArrayList<Boleto> boletos;
+    private ArrayList<Movie> movies;
 
-    public BoletoAdapter(Context context, ArrayList<Boleto> boletos){
+    public BoletoAdapter(Context context, ArrayList<Boleto> boletos, ArrayList<Movie> movies){
         this.context = context;
         this.boletos = boletos;
+        this.movies = movies;
     }
 
     @NonNull
@@ -52,6 +57,27 @@ public class BoletoAdapter extends RecyclerView.Adapter<BoletoAdapter.BoletoView
         else{
             holder.qr_image.setImageResource(R.drawable.image_broke);
         }
+        Movie movie = movies.stream().filter(
+                        m -> boletos.stream().anyMatch(b -> b.getPelicula_id().equalsIgnoreCase(m.getId())))
+                .findFirst().orElse(null);
+        holder.movie_title.setText(movie.getTitle());
+        holder.asiento_sala.setText(boletos.get(position).getAsiento());
+        holder.movie_sala.setText("1");
+        //
+        String fechaHoraStr  = boletos.get(position).getHorario();
+        int dia = 0;
+        String mes = "";
+        String hora = "";
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            LocalDateTime fechaHora = LocalDateTime.parse(fechaHoraStr);
+
+            dia = fechaHora.getDayOfMonth();
+            mes = fechaHora.getMonth().toString();
+            hora = fechaHora.getHour() + ":" + fechaHora.getMinute();
+        }
+        //
+        holder.horario_txt.setText(dia + " de " + mes + " a las " + hora);
     }
 
     @Override
@@ -61,9 +87,18 @@ public class BoletoAdapter extends RecyclerView.Adapter<BoletoAdapter.BoletoView
 
     public static class BoletoViewHolher extends RecyclerView.ViewHolder {
         ImageView qr_image;
+        TextView movie_title;
+        TextView asiento_sala;
+        TextView movie_sala;
+        TextView horario_txt;
+
         public BoletoViewHolher(@NonNull View itemView) {
             super(itemView);
             qr_image = itemView.findViewById(R.id.qr_image);
+            movie_title = itemView.findViewById(R.id.movie_title);
+            asiento_sala = itemView.findViewById(R.id.asiento_sala);
+            movie_sala = itemView.findViewById(R.id.movie_sala);
+            horario_txt = itemView.findViewById(R.id.horario_txt);
         }
     }
 }

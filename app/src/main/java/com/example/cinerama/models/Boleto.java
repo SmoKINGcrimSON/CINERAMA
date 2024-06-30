@@ -7,14 +7,16 @@ public class Boleto {
     private int proyeccion_id;
     private String user_email;
     private String asiento;
+    private String horario;
 
-    public Boleto(int id, String qr, String pelicula_id, int proyeccion_id, String user_email, String asiento){
+    public Boleto(int id, String qr, String pelicula_id, int proyeccion_id, String user_email, String asiento, String horario){
         this.id = id;
         this.qr = qr;
         this.pelicula_id = pelicula_id;
         this.proyeccion_id = proyeccion_id;
         this.user_email = user_email;
         this.asiento = asiento;
+        this.horario = horario;
     }
 
     public int getId() {
@@ -63,5 +65,17 @@ public class Boleto {
 
     public void setAsiento(String asiento) {
         this.asiento = asiento;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getHorario() {
+        return horario;
+    }
+
+    public void setHorario(String horario) {
+        this.horario = horario;
     }
 }

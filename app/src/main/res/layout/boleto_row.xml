@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="600dp">
+            android:layout_height="700dp">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/h1"
@@ -30,7 +30,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.9" />
+                app:layout_constraintGuide_percent="0.95" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/h4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.25" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/h5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.3" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/h6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.35" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/h3"
@@ -53,6 +74,13 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.95" />
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/v3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.3" />
+
             <ImageView
                 android:id="@+id/qr_image"
                 android:layout_width="0dp"
@@ -63,11 +91,12 @@
                 app:layout_constraintEnd_toStartOf="@+id/v2"
                 app:layout_constraintHorizontal_bias="0.507"
                 app:layout_constraintStart_toStartOf="@+id/v1"
-                app:layout_constraintTop_toTopOf="@+id/h3"
+                app:layout_constraintTop_toTopOf="@+id/h6"
                 app:srcCompat="@drawable/image_broke"
                 tools:ignore="ContentDescription" />
 
             <TextView
+                android:id="@+id/movie_title"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:text="Boleto"
@@ -79,6 +108,98 @@
                 app:layout_constraintEnd_toStartOf="@+id/v2"
                 app:layout_constraintStart_toStartOf="@+id/v1"
                 app:layout_constraintTop_toTopOf="@+id/h1"
+                tools:ignore="HardcodedText,UnusedAttribute" />
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:text="Asiento"
+                android:autoSizeMaxTextSize="25dp"
+                android:autoSizeMinTextSize="1dp"
+                android:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toTopOf="@+id/h4"
+                app:layout_constraintEnd_toStartOf="@+id/v3"
+                app:layout_constraintStart_toStartOf="@+id/v1"
+                app:layout_constraintTop_toTopOf="@+id/h3"
+                tools:ignore="HardcodedText,UnusedAttribute" />
+
+            <TextView
+                android:id="@+id/asiento_sala"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:text="TextView"
+                android:autoSizeMaxTextSize="25dp"
+                android:autoSizeMinTextSize="1dp"
+                android:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toTopOf="@+id/h4"
+                app:layout_constraintEnd_toStartOf="@+id/v2"
+                app:layout_constraintStart_toStartOf="@+id/v3"
+                app:layout_constraintTop_toTopOf="@+id/h3"
+                tools:ignore="HardcodedText,UnusedAttribute" />
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:text="Sala"
+                android:autoSizeMaxTextSize="25dp"
+                android:autoSizeMinTextSize="1dp"
+                android:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toTopOf="@+id/h5"
+                app:layout_constraintEnd_toStartOf="@+id/v3"
+                app:layout_constraintStart_toStartOf="@+id/v1"
+                app:layout_constraintTop_toTopOf="@+id/h4"
+                tools:ignore="HardcodedText,UnusedAttribute" />
+
+            <TextView
+                android:id="@+id/movie_sala"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:text="Sala"
+                android:autoSizeMaxTextSize="25dp"
+                android:autoSizeMinTextSize="1dp"
+                android:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toTopOf="@+id/h5"
+                app:layout_constraintEnd_toStartOf="@+id/v2"
+                app:layout_constraintStart_toStartOf="@+id/v3"
+                app:layout_constraintTop_toTopOf="@+id/h4"
+                tools:ignore="HardcodedText"
+                tools:targetApi="o" />
+
+            <TextView
+                android:id="@+id/textView25"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:autoSizeMaxTextSize="25dp"
+                android:autoSizeMinTextSize="1dp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:text="Horario"
+                app:layout_constraintBottom_toTopOf="@+id/h6"
+                app:layout_constraintEnd_toStartOf="@+id/v3"
+                app:layout_constraintStart_toStartOf="@+id/v1"
+                app:layout_constraintTop_toTopOf="@+id/h5"
+                tools:ignore="HardcodedText"
+                tools:targetApi="o" />
+
+            <TextView
+                android:id="@+id/horario_txt"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:autoSizeMaxTextSize="25dp"
+                android:autoSizeMinTextSize="1dp"
+                android:autoSizeTextType="uniform"
+                android:text="TextView"
+                app:layout_constraintBottom_toTopOf="@+id/h6"
+                app:layout_constraintEnd_toStartOf="@+id/v2"
+                app:layout_constraintStart_toStartOf="@+id/v3"
+                app:layout_constraintTop_toTopOf="@+id/h5"
                 tools:ignore="HardcodedText,UnusedAttribute" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

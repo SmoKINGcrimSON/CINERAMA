@@ -13,9 +13,11 @@ import android.widget.Button;
 
 import com.example.cinerama.R;
 import com.example.cinerama.models.Boleto;
+import com.example.cinerama.models.Movie;
 import com.example.cinerama.models.User;
 import com.example.cinerama.repository.UserData;
 import com.example.cinerama.services.BoletoService;
+import com.example.cinerama.services.MovieService;
 import com.example.cinerama.utils.Tools;
 import com.example.cinerama.views.activities.MainActivity;
 import com.example.cinerama.views.adapters.BoletoAdapter;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 
 public class CompraExitosaFragment extends Fragment {
     private ArrayList<Boleto> boletos;
+    private ArrayList<Movie> movies;
     private Button btn_regresar;
     private static final String ARG_BUTTON_HOME_ACTIVATED = "btn_home";
     private boolean btn_home_activated;
@@ -59,6 +62,9 @@ public class CompraExitosaFragment extends Fragment {
         //btn settings
         this.btn_regresar = view.findViewById(R.id.btn_regresar_home);
         if(!btn_home_activated) this.btn_regresar.setVisibility(View.INVISIBLE);
+        //create futures
+        ArrayList<CompletableFuture<?>> futures = new ArrayList<>();
+        //add futures
         //
         CompletableFuture.supplyAsync(() -> {
             BoletoService service = new BoletoService("https://664f5090fafad45dfae3489d.mockapi.io");
@@ -68,15 +74,28 @@ public class CompraExitosaFragment extends Fragment {
                 .thenAccept(boletos -> {
                     User user = new UserData(getContext()).getUser();
                     this.boletos = boletos.stream().filter(b -> b.getUser_email().equalsIgnoreCase(user.getEmail())).collect(Collectors.toCollection(ArrayList::new));
-                    //set up viewPager2
-                    Tools.setViewPage(view.findViewById(R.id.viewPager2_boletos), new BoletoAdapter(getContext(), this.boletos));
-                    this.btn_regresar.setEnabled(true);
-                    this.btn_regresar.setOnClickListener(e -> {
-                        Intent intent = new Intent(getContext(), MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                        getActivity().finish();
-                    });
+                })
+                .thenRun(() -> {
+                    CompletableFuture.supplyAsync(() -> {
+                        MovieService service = new MovieService("https://663b85f9fee6744a6ea1f43e.mockapi.io");
+                        return service.getMovies();
+                    })
+                            .thenCompose(movies -> movies)
+                            .thenAccept(movies -> {
+                                //recover movies present in boletos
+                                this.movies = movies.stream().filter(
+                                        m -> this.boletos.stream().anyMatch(b -> b.getPelicula_id().equalsIgnoreCase(m.getId())))
+                                        .collect(Collectors.toCollection(ArrayList::new));
+                                //set up viewPager2
+                                Tools.setViewPage(view.findViewById(R.id.viewPager2_boletos), new BoletoAdapter(getContext(), this.boletos, this.movies));
+                                this.btn_regresar.setEnabled(true);
+                                this.btn_regresar.setOnClickListener(e -> {
+                                    Intent intent = new Intent(getContext(), MainActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                    getActivity().finish();
+                                });
+                            });
                 });
     }
 }
