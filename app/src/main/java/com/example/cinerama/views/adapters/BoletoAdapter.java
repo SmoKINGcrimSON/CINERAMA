@@ -57,8 +57,9 @@ public class BoletoAdapter extends RecyclerView.Adapter<BoletoAdapter.BoletoView
         else{
             holder.qr_image.setImageResource(R.drawable.image_broke);
         }
+        String movie_id = boletos.get(position).getPelicula_id();
         Movie movie = movies.stream().filter(
-                        m -> boletos.stream().anyMatch(b -> b.getPelicula_id().equalsIgnoreCase(m.getId())))
+                        m -> boletos.stream().anyMatch(b -> movie_id.equalsIgnoreCase(m.getId())))
                 .findFirst().orElse(null);
         holder.movie_title.setText(movie.getTitle());
         holder.asiento_sala.setText(boletos.get(position).getAsiento());
